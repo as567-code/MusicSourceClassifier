@@ -1,4 +1,4 @@
-import { ArrowUpRight, AudioWaveform, Disc3, ShieldCheck } from "lucide-react";
+import { AudioWaveform, Disc3, ShieldCheck } from "lucide-react";
 
 import DropZone from "@/components/DropZone";
 import type { SampleTrack } from "@/data/sampleTracks";
@@ -54,13 +54,6 @@ const UploadHero = ({
             <div className="font-label flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.34em] text-secondary-foreground/70">
               <span>Retro editorial analog-lab</span>
               <span className="h-px w-16 bg-secondary-foreground/20" />
-              <a
-                href="/paper"
-                className="inline-flex items-center gap-1 transition hover:text-secondary-foreground"
-              >
-                Research notes
-                <ArrowUpRight className="h-3 w-3" />
-              </a>
             </div>
 
             <div className="space-y-4">

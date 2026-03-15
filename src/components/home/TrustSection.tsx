@@ -1,4 +1,4 @@
-import { ArrowUpRight, BadgeAlert, BookOpenText, ShieldCheck } from "lucide-react";
+import { BadgeAlert, BookOpenText, ShieldCheck } from "lucide-react";
 
 const trustCards = [
   {
@@ -16,7 +16,7 @@ const trustCards = [
   {
     title: "Why trust the framing",
     description:
-      "The app links back to the research and keeps caveats visible so the presentation feels credible instead of theatrical.",
+      "The app keeps its caveats visible so the presentation feels credible instead of theatrical.",
     icon: BookOpenText,
   },
 ];
@@ -36,16 +36,6 @@ const TrustSection = () => {
           the experience is polished, but the language stays careful about what
           a classifier can actually say.
         </p>
-
-        <a
-          href="/research_paper.pdf"
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex items-center gap-2 text-sm font-medium text-foreground transition hover:text-primary"
-        >
-          Read the research paper
-          <ArrowUpRight className="h-4 w-4" />
-        </a>
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">

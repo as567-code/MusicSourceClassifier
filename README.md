@@ -4,7 +4,6 @@ Created by Aditya Swaroop.
 
 ## Contents
 - [Overview](#overview)
-- [Link to the Research Paper](#link-to-the-research-paper)
 - [Video Demo](#video-demo)
 - [Key Features](#key-features)
 - [Tech Stack](#tech-stack)
@@ -19,13 +18,9 @@ MusicSourceClassifier is a full-stack audio analysis application designed to dis
 
 The core backend uses a binary classification CNN trained on Mel spectrograms and Similarity Search algorithm through FAISS and KNN to find the top $k$ most similar human-made tracks based on cosine similarity of waveform embeddings and genre similarity. The dataset comes from the GTZAN dataset for Human-Made tracks and SONICS for AI-Generated tracks.
 
-## Link to the Research Paper
-
-**[PLEASE READ] Details to the core backend and ML models as well as performance results are provided in the paper [here](public/research_paper.pdf).**
-
 ## Video Demo
 
-[![Demo Video](https://img.youtube.com/vi/2JOW_FyJLlY/0.jpg)](https://youtu.be/2JOW_FyJLlY)
+[Watch the demo video](https://youtu.be/2JOW_FyJLlY)
 
 ## Key Features
 
@@ -178,10 +173,6 @@ venv/bin/python -m pytest backend/tests -q
 npx vitest run src/pages/Results.test.tsx src/components/results/ShareSummaryCard.test.tsx
 npm run lint
 ```
-
-## Resources
-
-Additional implementation context and supporting references are summarized in the bundled research paper.
 
 ## License
 
