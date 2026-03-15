@@ -15,11 +15,6 @@ Created by Aditya Swaroop.
 
 ## Overview
 
-<p float="left">
-  <img src="media/homepage.png" alt="Homepage" width="49%" />
-  <img src="media/aidetectpage.png" alt="AI Detect Page" width="49%" />
-</p>
-
 MusicSourceClassifier is a full-stack audio analysis application designed to distinguish between **Human-Made** and **AI-Generated** music. By combining a custom Deep Learning classifier with audio fingerprinting technology, the system not only detects the origin of a track but also identifies real-world songs that sound similar to AI-generated uploads.
 
 The core backend uses a binary classification CNN trained on Mel spectrograms and Similarity Search algorithm through FAISS and KNN to find the top $k$ most similar human-made tracks based on cosine similarity of waveform embeddings and genre similarity. The dataset comes from the GTZAN dataset for Human-Made tracks and SONICS for AI-Generated tracks.
@@ -74,23 +69,16 @@ The showcase frontend now uses a single route pattern, `/results/:type`, for bot
 
 ## Page Results
 
-Both example flows below now land on the unified `/results/:type` route so the AI and human outcomes feel equally complete while still tailoring the explanation to the verdict.
+Both verdict flows land on the unified `/results/:type` route so the AI and human outcomes feel equally complete while still tailoring the explanation to the verdict.
 
 ### Song is AI-Generated
 
-<img src="media/ai1.gif" alt="AI1 Result" width="70%" />
-
 - Used an AI-Generated song "fake_54229_udio_0.mp3" from the SONICS dataset. The system runs the file through the CNN model and finds that it is AI-Generated through binary classification.
-
-
-<img src="media/ai2.gif" alt="AI2 Result" width="70%" />
 
 - After finding that the song is AI-Generated, the system generates an audio embedding using TorchOpenL3 and queries the FAISS index to find the Top-K nearest "real song" neighbors from the GTZAN dataset, displaying them as similar tracks.
 
 
 ### Song is Human-Made
-
-<img src="media/human1.gif" alt="Human Result" width="70%" />
 
 - Used a human-made GTZAN reference track to demonstrate the human verdict flow. The system runs the file through the CNN model and classifies it as human-made.
 - The system maps the upload back to available catalog metadata so the human-side explanation can show a grounded reference when one is available.
