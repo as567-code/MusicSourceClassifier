@@ -156,7 +156,6 @@ The server will start at `http://localhost:8000`.
 ```bash
 npm run dev:frontend
 ```
-The app will be available at `http://localhost:5173/`.
 
 ### Verification
 
