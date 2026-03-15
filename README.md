@@ -4,12 +4,10 @@ Created by Aditya Swaroop.
 
 ## Contents
 - [Overview](#overview)
-- [Video Demo](#video-demo)
 - [Key Features](#key-features)
 - [Tech Stack](#tech-stack)
 - [How It Works](#how-it-works)
 - [Installation](#installation)
-- [Resources](#resources)
 - [License](#license)
 
 ## Overview
@@ -17,10 +15,6 @@ Created by Aditya Swaroop.
 MusicSourceClassifier is a full-stack audio analysis application designed to distinguish between **Human-Made** and **AI-Generated** music. By combining a custom Deep Learning classifier with audio fingerprinting technology, the system not only detects the origin of a track but also identifies real-world songs that sound similar to AI-generated uploads.
 
 The core backend uses a binary classification CNN trained on Mel spectrograms and Similarity Search algorithm through FAISS and KNN to find the top $k$ most similar human-made tracks based on cosine similarity of waveform embeddings and genre similarity. The dataset comes from the GTZAN dataset for Human-Made tracks and SONICS for AI-Generated tracks.
-
-## Video Demo
-
-[Watch the demo video](https://youtu.be/2JOW_FyJLlY)
 
 ## Key Features
 
