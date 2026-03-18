@@ -69,10 +69,15 @@ def register_runtime_routes(app):
 
 def create_app(load_models=True):
     app = Flask(__name__)
-    CORS(app)
+    cors_origins = os.environ.get("CORS_ORIGINS", "*")
+    if cors_origins == "*":
+        CORS(app)
+    else:
+        CORS(app, origins=[o.strip() for o in cors_origins.split(",") if o.strip()])
 
     app.config['UPLOAD_FOLDER'] = str(UPLOAD_FOLDER)
     app.config['MODELS_LOADED'] = False
+    app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50 MB
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
     register_runtime_routes(app)

@@ -1,0 +1,13 @@
+Flask
+flask-cors
+librosa
+numpy
+faiss-cpu
+torchopenl3
+soundfile
+tqdm
+six
+julius
+nnAudio
+pandas
+gunicorn

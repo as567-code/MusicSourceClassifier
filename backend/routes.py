@@ -14,6 +14,13 @@ def _load_analysis_service():
 
 @routes.route('/api/health')
 def health_check():
+    if __package__:
+        from . import globals
+    else:
+        import globals
+
+    if not globals.runtime_ready():
+        return jsonify({"status": "loading"}), 503
     return jsonify({"status": "healthy"})
 
 @routes.route("/api/analyze", methods=["POST"])
