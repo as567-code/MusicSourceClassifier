@@ -1,3 +1,4 @@
+import concurrent.futures
 import os
 from uuid import uuid4
 
@@ -109,13 +110,23 @@ def search_similar_songs(filepath, k=5):
     if globals.search_engine is None:
         return None
 
-    try:
-        results_df = globals.search_engine.knn_query_vector(
-            globals.search_engine.embed_path(filepath),
-            k=k,
-        )
-    except Exception:
-        return None
+    _timeout = int(os.environ.get("SIMILARITY_SEARCH_TIMEOUT", "20"))
+
+    def _run():
+        try:
+            return globals.search_engine.knn_query_vector(
+                globals.search_engine.embed_path(filepath),
+                k=k,
+            )
+        except Exception:
+            return None
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+        future = executor.submit(_run)
+        try:
+            results_df = future.result(timeout=_timeout)
+        except (concurrent.futures.TimeoutError, Exception):
+            return None
 
     if results_df is None or getattr(results_df, "empty", False):
         return None
