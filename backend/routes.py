@@ -12,6 +12,11 @@ def _load_analysis_service():
     return analysis_service
 
 
+@routes.route('/')
+def index():
+    return jsonify({"name": "MusicSourceClassifier API", "status": "ok", "endpoints": ["/api/health", "/api/analyze"]})
+
+
 @routes.route('/api/health')
 def health_check():
     if __package__:
