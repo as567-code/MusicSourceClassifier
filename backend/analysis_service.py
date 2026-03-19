@@ -121,12 +121,15 @@ def search_similar_songs(filepath, k=5):
         except Exception:
             return None
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
-        future = executor.submit(_run)
-        try:
-            results_df = future.result(timeout=_timeout)
-        except (concurrent.futures.TimeoutError, Exception):
-            return None
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    future = executor.submit(_run)
+    try:
+        results_df = future.result(timeout=_timeout)
+    except (concurrent.futures.TimeoutError, Exception):
+        executor.shutdown(wait=False)
+        return None
+    finally:
+        executor.shutdown(wait=False)
 
     if results_df is None or getattr(results_df, "empty", False):
         return None
