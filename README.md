@@ -8,6 +8,7 @@ Created by Aditya Swaroop.
 - [Tech Stack](#tech-stack)
 - [How It Works](#how-it-works)
 - [Installation](#installation)
+- [Model Training & Evaluation](#model-training--evaluation)
 - [License](#license)
 
 ## Overview
@@ -84,6 +85,13 @@ Both verdict flows land on the unified `/results/:type` route so the AI and huma
 │   ├── globals.py          # Shared state management
 │   ├── models/             # Trained .pth models
 │   └── csv/                # Dataset metadata
+├── training/
+│   ├── download_datasets.py # Dataset download helpers
+│   ├── train.py            # Training pipeline
+│   └── evaluate.py         # Evaluation & metrics
+├── notebooks/
+│   └── training_and_evaluation.ipynb  # Full training notebook
+├── results/                # Generated metrics, plots, logs
 ├── src/
 │   ├── components/         # React components (DropZone, results cards, visualizers, etc.)
 │   ├── pages/              # Main views (Index, Analyze, Results)
@@ -165,6 +173,86 @@ Useful local verification commands:
 venv/bin/python -m pytest backend/tests -q
 npx vitest run src/pages/Results.test.tsx src/components/results/ShareSummaryCard.test.tsx
 npm run lint
+```
+
+## Model Training & Evaluation
+
+### Datasets
+
+| Dataset | Class | Tracks | Duration | Source |
+|---------|-------|--------|----------|--------|
+| GTZAN | Human-made | 1,000 | 30s each | 10 genres (blues, classical, country, disco, hiphop, jazz, metal, pop, reggae, rock) |
+| SONICS | AI-generated | ~1,000+ | Variable | Multiple AI music generators |
+
+### Training Configuration
+
+| Parameter | Value |
+|-----------|-------|
+| Architecture | AudioCNN (4 conv blocks) |
+| Parameters | 421,825 |
+| Input | Mel spectrogram (64 bins, 4s audio @ 22050 Hz) |
+| Loss | Binary Cross-Entropy |
+| Optimizer | Adam (lr=1e-3) |
+| LR Schedule | ReduceLROnPlateau (factor=0.5, patience=2) |
+| Early Stopping | Patience = 5 epochs |
+| Train/Val/Test Split | 70% / 15% / 15% (stratified) |
+| Batch Size | 32 |
+| Epochs | 25 (max) |
+
+### Results
+
+| Metric | Value |
+|--------|-------|
+| Test Accuracy | _Run training to fill_ |
+| Precision (AI) | _Run training to fill_ |
+| Recall (AI) | _Run training to fill_ |
+| F1 (AI) | _Run training to fill_ |
+| AUC-ROC | _Run training to fill_ |
+
+> **Note**: Run training with your own data to generate actual metrics. The table above will be populated by the evaluation script.
+
+### Training Curves
+
+![Training Curves](results/training_curves.png)
+
+### Confusion Matrix
+
+![Confusion Matrix](results/confusion_matrix.png)
+
+### How to Reproduce
+
+```bash
+# 1. Download datasets
+pip install kaggle huggingface_hub
+python training/download_datasets.py --output-dir data/
+
+# 2. Train (25 epochs, ~1 hour on GPU)
+python training/train.py --epochs 25 --batch-size 32 --data-dir data/
+
+# 3. Evaluate (generates confusion matrix, ROC curve, metrics JSON)
+python training/evaluate.py
+
+# 4. Explore results in the notebook
+jupyter notebook notebooks/training_and_evaluation.ipynb
+```
+
+### Project Structure (Training)
+
+```
+training/
+  __init__.py
+  download_datasets.py    # Dataset download helpers (GTZAN + SONICS)
+  train.py                # Full training pipeline
+  evaluate.py             # Evaluation with confusion matrix, ROC, metrics
+notebooks/
+  training_and_evaluation.ipynb   # Interactive notebook with ablation study
+results/
+  training_log.csv        # Per-epoch metrics
+  eval_metrics.json       # Test set evaluation results
+  confusion_matrix.png    # Confusion matrix heatmap
+  roc_curve.png           # ROC curve with AUC
+  training_curves.png     # Loss and accuracy curves
+  mel_spectrogram_samples.png  # Sample spectrograms from each class
 ```
 
 ## License
