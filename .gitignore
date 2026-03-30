@@ -37,3 +37,8 @@ env/
 uploads/
 docs/plans/
 backend/csv/fake_songs.csv
+
+# Training data & large artifacts
+data/
+results/best_model.pth
+results/test_manifest.json
