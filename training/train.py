@@ -47,6 +47,7 @@ from backend.cnn_model import AudioCNN  # noqa: E402
 SAMPLE_RATE = 22050
 MAX_MS = 4000  # 4 seconds
 N_MELS = 64
+MAX_SAMPLES = int(SAMPLE_RATE * MAX_MS / 1000)  # 88200
 AUDIO_EXTENSIONS = {".wav", ".mp3", ".flac", ".ogg"}
 
 
@@ -64,13 +65,15 @@ def preprocess_audio(file_path: str):
         print(f"  [skip] {file_path}: {e}")
         return None
 
+    if waveform is None or len(waveform) == 0:
+        return None
+
     waveform_tensor = torch.from_numpy(waveform).unsqueeze(0)  # (1, samples)
 
-    max_len = int(SAMPLE_RATE * MAX_MS / 1000)
-    if waveform_tensor.shape[1] > max_len:
-        waveform_tensor = waveform_tensor[:, :max_len]
+    if waveform_tensor.shape[1] > MAX_SAMPLES:
+        waveform_tensor = waveform_tensor[:, :MAX_SAMPLES]
     else:
-        padding = max_len - waveform_tensor.shape[1]
+        padding = MAX_SAMPLES - waveform_tensor.shape[1]
         waveform_tensor = F.pad(waveform_tensor, (0, padding))
 
     mel_transform = torchaudio.transforms.MelSpectrogram(
@@ -98,8 +101,10 @@ class AudioDataset(Dataset):
     def __getitem__(self, idx):
         spec = preprocess_audio(self.file_paths[idx])
         if spec is None:
-            # Return a zero tensor so the DataLoader does not crash
-            spec = torch.zeros(1, 1, N_MELS, int(SAMPLE_RATE * MAX_MS / 1000) // 512 + 1)
+            # Return a zero tensor matching the expected spectrogram shape.
+            # MelSpectrogram with default n_fft=400, hop_length=200
+            n_time = MAX_SAMPLES // 200 + 1
+            spec = torch.zeros(1, 1, N_MELS, n_time)
         label = torch.tensor([self.labels[idx]], dtype=torch.float32)
         return spec.squeeze(0), label  # (1, n_mels, time), (1,)
 
