@@ -201,17 +201,20 @@ npm run lint
 
 ### Results
 
-*Demonstrated on synthetic data (50 human + 50 AI tracks, 5 epochs). Full training on GTZAN + SONICS recommended for production metrics.*
+*Trained on full GTZAN (1,000 human tracks) + SONICS (5,000 AI tracks). Stratified 70/15/15 split — 900 test samples (150 human, 750 AI).*
 
-| Metric | Value (demo) |
-|--------|-------------|
-| Test Accuracy | 100.0% |
-| Precision (AI) | 100.0% |
+| Metric | Value |
+|--------|-------|
+| Test Accuracy | 99.89% |
+| Precision (Human) | 100.0% |
+| Recall (Human) | 99.33% |
+| F1 (Human) | 99.67% |
+| Precision (AI) | 99.87% |
 | Recall (AI) | 100.0% |
-| F1 (AI) | 100.0% |
+| F1 (AI) | 99.93% |
 | AUC-ROC | 1.000 |
 
-> **Note**: These results are from a pipeline validation run on synthetic audio. Train on the full GTZAN + SONICS datasets for production-grade metrics: `python training/train.py --epochs 25 --batch-size 32 --data-dir data/`
+> **Note**: Model converged in 2 epochs with early stopping at epoch 7. Only 1 misclassification out of 900 test samples.
 
 ### Training Curves
 
